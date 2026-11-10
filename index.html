@@ -30,49 +30,49 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
 
-  <!-- ECRÃ DE BLOQUEIO E ACESSO RESTRITO -->
-  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #070c12; z-index: 999999; display: flex; justify-content: center; align-items: center;">
-    <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
-        <h3 style="color: #c59b27; margin-bottom: 10px; letter-spacing: 1px; font-family: sans-serif; font-weight: bold; font-size: 18px;">EMGFA — ACESSO RESTRITO</h3>
-        <p style="color: #a0aec0; font-size: 13px; margin-bottom: 25px; font-family: sans-serif;">Sistema Classificado. Introduza a credencial de segurança para aceder ao portal.</p>
-        
-        <input type="password" id="access-password" placeholder="Palavra-passe de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; background: #070c12; border: 1px solid #2d3748; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px; outline: none;">
-        
-        <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Desbloquear Sistema</button>
-        
-        <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none; font-family: sans-serif;">Credencial inválida. Acesso negado.</p>
+ <!-- ECRÃ DE BLOQUEIO / PALAVRA-PASSE DE ACESSO RESTRITO -->
+    <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b131a; z-index: 9999; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
+            <h3 style="color: #c59b27; margin-bottom: 10px; letter-spacing: 1px;">EMGFA — ACESSO RESTRITO</h3>
+            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 25px;">Sistema Classificado. Introduza a credencial de segurança para aceder ao portal.</p>
+            
+            <input type="password" id="access-password" placeholder="Palavra-passe de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; background: #070c12; border: 1px solid #2d3748; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px;">
+            
+            <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Desbloquear Sistema</button>
+            
+            <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none;">Credencial inválida. Acesso negado.</p>
+        </div>
     </div>
-  </div>
 
-  <script>
-    function checkPassword() {
-        const masterPassword = "FA-GOV-2026-BISSAU"; 
-        const inputVal = document.getElementById('access-password').value;
+    <script>
+        function checkPassword() {
+            const masterPassword = "FA-GOV-2026-BISSAU"; 
+            const inputVal = document.getElementById('access-password').value;
+            
+            if (inputVal === masterPassword) {
+                const overlay = document.getElementById('auth-overlay');
+                overlay.style.transition = "opacity 0.4s ease";
+                overlay.style.opacity = "0";
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                }, 400);
+            } else {
+                const errorMsg = document.getElementById('error-msg');
+                errorMsg.style.display = "block";
+                document.getElementById('access-password').value = "";
+            }
+        }
         
-        if (inputVal === masterPassword) {
-            const overlay = document.getElementById('auth-overlay');
-            overlay.style.transition = "opacity 0.4s ease";
-            overlay.style.opacity = "0";
-            setTimeout(() => {
-                overlay.style.display = "none";
-            }, 400);
-        } else {
-            const errorMsg = document.getElementById('error-msg');
-            errorMsg.style.display = "block";
-            document.getElementById('access-password').value = "";
-        }
-    }
-    
-    document.addEventListener("DOMContentLoaded", function() {
-        const pwdInput = document.getElementById('access-password');
-        if (pwdInput) {
-            pwdInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-        }
-    });
+        document.addEventListener("DOMContentLoaded", function() {
+            const pwdInput = document.getElementById('access-password');
+            if (pwdInput) {
+                pwdInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+        });
   </script>
 
   <!-- BARRA DE ALERTA DO ESTADO-MAIOR -->
