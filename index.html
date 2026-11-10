@@ -290,6 +290,7 @@
   </footer>
 
   <script>
+   <script>
     const SUPABASE_URL = 'https://totagb-db.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_1UyOPoQPhgdMWZ4lN6fxgQ_eKNQCop3';
     
@@ -304,19 +305,24 @@
       console.log('Modo demonstração ativo');
     }
 
+    // NOVA FUNÇÃO DE ACESSO RESTRITO MAIS SEGURA E VISÍVEL
     function tentarEntrarAreaRestrita() {
       const senha = prompt("🛡️ ACESSO INSTITUCIONAL RESERVADO (EMGFA)\nInsira a Chave Criptografada do Estado:");
       if (senha === CHAVE_MESTRE_GOVERNO) {
-        document.getElementById('portal-publico').classList.add('hidden');
+        document.getElementById('portal-publico').style.display = 'none';
         document.getElementById('portal-confidencial').classList.remove('hidden');
+        document.getElementById('portal-confidencial').style.display = 'block';
+        window.scrollTo(0, 0);
       } else if (senha !== null) {
-        alert("❌ Credencial inválida! Tentativa registada pelo sistema.");
+        alert("❌ Credencial inválida! Acesso negado pelo Estado-Maior.");
       }
     }
 
     function sairAreaRestrita() {
+      document.getElementById('portal-confidencial').style.display = 'none';
       document.getElementById('portal-confidencial').classList.add('hidden');
-      document.getElementById('portal-publico').classList.remove('hidden');
+      document.getElementById('portal-publico').style.display = 'block';
+      window.scrollTo(0, 0);
     }
 
     document.getElementById('form-registo-militar')?.addEventListener('submit', async (e) => {
