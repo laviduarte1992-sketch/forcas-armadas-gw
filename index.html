@@ -255,12 +255,14 @@
     </div>
   </footer>
 
-  <!-- LÓGICA E SCRIPT DO SUPABASE -->
+<!-- LÓGICA E SCRIPT DO SUPABASE -->
   <script>
     const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co'; // Insira o seu URL real do Supabase
     const SUPABASE_KEY = 'SUA_ANON_KEY_AQUI';            // Insira a sua Anon Key real
-    const CHAVE_MESTRE_GOVERNO = "FA-GOV-2026-BISSAU";
     
+    // CHAVE OFICIAL DAS FORÇAS ARMADAS (EMGFA)
+    const CHAVE_MESTRE_GOVERNO = "FA-GOV-2026-BISSAU";
+
     let supabaseClient = null;
     try {
       if (!SUPABASE_URL.includes('SEU_PROJETO')) {
@@ -270,8 +272,7 @@
       console.log('Modo demonstração ativo');
     }
 
-    const CHAVE_MESTRE_GOVERNO = "GN-GOV-2026-BISSAU";
-
+    // FUNÇÃO QUE O BOTÃO VERMELHO CHAMA (onclick="tentarEntrarAreaRestrita()")
     function tentarEntrarAreaRestrita() {
       const senha = prompt("🛡️ ACESSO INSTITUCIONAL RESERVADO (EMGFA)\nInsira a Chave Criptografada do Estado:");
       if (senha === CHAVE_MESTRE_GOVERNO) {
@@ -288,7 +289,7 @@
     }
 
     // REGISTO DE MILITAR NO SUPABASE
-    document.getElementById('form-registo-militar').addEventListener('submit', async (e) => {
+    document.getElementById('form-registo-militar')?.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const dadosMilitar = {
