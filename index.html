@@ -27,18 +27,20 @@
             animation: marquee 25s linear infinite;
         }
     </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
 
     <!-- ECRÃ DE BLOQUEIO / PALAVRA-PASSE DE ACESSO RESTRITO -->
-    <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b131a; z-index: 9999; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
-            <h3 style="color: #c59b27; margin-bottom: 10px; letter-spacing: 1px;">EMGFA — ACESSO RESTRITO</h3>
-            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 25px;">Sistema Classificado. Introduza a credencial de segurança para aceder ao portal.</p>
+    <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0b131a; z-index: 99999; display: flex; justify-content: center; align-items: center;">
+        <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.8);">
+            <h3 style="color: #c59b27; margin-bottom: 10px; letter-spacing: 1px; font-family: sans-serif; font-weight: bold; font-size: 18px;">EMGFA — ACESSO RESTRITO</h3>
+            <p style="color: #a0aec0; font-size: 13px; margin-bottom: 25px; font-family: sans-serif;">Sistema Classificado. Introduza a credencial de segurança para aceder ao portal.</p>
             
-            <input type="password" id="access-password" placeholder="Palavra-passe de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; background: #070c12; border: 1px solid #2d3748; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px;">
+            <input type="password" id="access-password" placeholder="Palavra-passe de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; background: #070c12; border: 1px solid #2d3748; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px; outline: none;">
             
-            <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Desbloquear Sistema</button>
+            <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Desbloquear Sistema</button>
             
-            <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none;">Credencial inválida. Acesso negado.</p>
+            <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none; font-family: sans-serif;">Credencial inválida. Acesso negado.</p>
         </div>
     </div>
 
@@ -72,8 +74,6 @@
             }
         });
     </script>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
 
     <!-- CABEÇALHO INSTITUCIONAL -->
     <header class="bg-slate-900 border-b border-yellow-600/40 p-4 shadow-md sticky top-0 z-50">
@@ -81,4 +81,97 @@
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-red-600 border-2 border-yellow-500 flex items-center justify-center font-bold text-yellow-300">★</div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-wider text-yellow-500
+                    <h1 class="text-lg font-bold tracking-wider text-yellow-500">FORÇAS ARMADAS</h1>
+                    <p class="text-xs text-slate-400">ESTADO-MAIOR GENERAL (EMGFA)</p>
+                </div>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-4 md:gap-6 text-sm font-semibold">
+                <a href="#" class="hover:text-yellow-400 transition">INÍCIO</a>
+                <a href="#" class="hover:text-yellow-400 transition">RAMOS MILITAR</a>
+                <a href="#" class="hover:text-yellow-400 transition">DEPARTAMENTOS</a>
+                <a href="#" class="bg-red-700 text-white px-3 py-1 rounded font-bold hover:bg-red-600 transition border border-yellow-500">BASE DE DADOS SEGURA (EMGFA)</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL COMPLETO -->
+    <main class="flex-grow max-w-7xl mx-auto p-6 my-auto">
+        <div class="text-center my-8">
+            <div class="w-24 h-24 bg-red-600 border-4 border-yellow-500 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
+                <span class="text-3xl font-bold text-yellow-300">★</span>
+            </div>
+            <div class="inline-block bg-slate-900 border border-yellow-600/40 px-4 py-1 rounded-full text-xs font-semibold text-yellow-500 mb-3 tracking-widest">REPÚBLICA DA GUINÉ-BISSAU</div>
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-wide text-white mb-3">UNIDADE, LUTA, PROGRESSO</h2>
+            <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto">Plataforma Institucional do Estado-Maior General das Forças Armadas Revolucionárias do Povo (FARP).</p>
+        </div>
+
+        <!-- RAMOS DAS FORÇAS ARMADAS -->
+        <section class="my-12">
+            <h3 class="text-yellow-500 font-bold text-lg mb-6 tracking-wide border-l-4 border-red-600 pl-3">RAMOS DAS FORÇAS ARMADAS</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-lg shadow-xl hover:border-yellow-600/50 transition">
+                    <div class="text-xl mb-2">🪖</div>
+                    <h4 class="text-yellow-500 font-bold mb-2">EXÉRCITO (TERRESTRE)</h4>
+                    <p class="text-slate-400 text-sm">Proteção da soberania territorial, defesa das fronteiras nacionais e operações de infantaria e artilharia em todo o país.</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-lg shadow-xl hover:border-yellow-600/50 transition">
+                    <div class="text-xl mb-2">⚓</div>
+                    <h4 class="text-yellow-500 font-bold mb-2">ARMADA (MARINHA)</h4>
+                    <p class="text-slate-400 text-sm">Patrulhamento marítimo, fiscalização do arquipélago dos Bijagós e proteção da Zona Económica Exclusiva (ZEE).</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-lg shadow-xl hover:border-yellow-600/50 transition">
+                    <div class="text-xl mb-2">✈️</div>
+                    <h4 class="text-yellow-500 font-bold mb-2">FORÇA AÉREA</h4>
+                    <p class="text-slate-400 text-sm">Vigilância do espaço aéreo nacional, transporte tático militar e apoio em missões de salvamento e proteção civil.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEPARTAMENTOS GERAIS DO EMGFA -->
+        <section class="my-12">
+            <h3 class="text-yellow-500 font-bold text-lg mb-6 tracking-wide border-l-4 border-red-600 pl-3">DEPARTAMENTOS GERAIS DO EMGFA</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">📁 D-1</span>
+                    <h5 class="text-white text-sm font-semibold">PESSOAL E MOBILIZAÇÃO</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">🛡️ D-2</span>
+                    <h5 class="text-white text-sm font-semibold">INFORMAÇÃO E INTELIGÊNCIA</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">⚔️ D-3</span>
+                    <h5 class="text-white text-xs font-semibold">OPERAÇÕES E TREINO</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">📦 D-4</span>
+                    <h5 class="text-white text-sm font-semibold">LOGÍSTICA E MATERIAL</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">🏥</span>
+                    <h5 class="text-white text-sm font-semibold">DIREÇÃO DE SAÚDE MILITAR</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">⚖️</span>
+                    <h5 class="text-white text-sm font-semibold">JUSTIÇA E TRIBUNAL MILITAR</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">📡</span>
+                    <h5 class="text-white text-sm font-semibold">COMUNICAÇÕES E CIBERDEFESA</h5>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg shadow">
+                    <span class="text-yellow-500 text-xs font-bold block mb-1">💰</span>
+                    <h5 class="text-white text-sm font-semibold">DIREÇÃO DE FINANÇAS / INTENDÊNCIA</h5>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 mt-auto">
+        <p class="mb-2">&copy; 2026 Estado-Maior General das Forças Armadas da Guiné-Bissau (EMGFA). Todos os direitos reservados.</p>
+        <p class="text-slate-400 font-semibold">Desenvolvido por <span class="text-yellow-500">LAVI DUARTE INDEQUE</span></p>
+    </footer>
+
+</body>
+</html>
