@@ -47,7 +47,6 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
       
       <div class="flex items-center space-x-3">
-        <!-- INSÍGNIA DAS FARP (Estrela Negra no Círculo Vermelho/Dourado) -->
         <div class="w-12 h-12 bg-red-700 rounded-full flex items-center justify-center border-2 border-amber-400 shadow-lg">
           <span class="text-2xl text-black font-black">★</span>
         </div>
@@ -94,7 +93,6 @@
       <h2 class="text-2xl font-black text-amber-400 uppercase tracking-wide text-center mb-10">Ramos das Forças Armadas</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- EXÉRCITO -->
         <div class="bg-slate-900 p-6 rounded-xl border-t-4 border-emerald-600 shadow-xl">
           <div class="text-4xl mb-3">🪖</div>
           <h3 class="text-xl font-bold text-white uppercase mb-2">Exército (Terrestre)</h3>
@@ -103,7 +101,6 @@
           </p>
         </div>
 
-        <!-- ARMADA -->
         <div class="bg-slate-900 p-6 rounded-xl border-t-4 border-blue-600 shadow-xl">
           <div class="text-4xl mb-3">⚓</div>
           <h3 class="text-xl font-bold text-white uppercase mb-2">Armada (Marinha)</h3>
@@ -112,7 +109,6 @@
           </p>
         </div>
 
-        <!-- FORÇA AÉREA -->
         <div class="bg-slate-900 p-6 rounded-xl border-t-4 border-amber-500 shadow-xl">
           <div class="text-4xl mb-3">✈️</div>
           <h3 class="text-xl font-bold text-white uppercase mb-2">Força Aérea</h3>
@@ -134,185 +130,4 @@
           <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
             <span>🗂️</span> D-1: Pessoal e Mobilização
           </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>🛡️</span> D-2: Informação e Inteligência
-          </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>⚔️</span> D-3: Operações e Treino
-          </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>📦</span> D-4: Logística e Material
-          </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>🏥</span> Direção de Saúde Militar
-          </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>⚖️</span> Justiça e Tribunal Militar
-          </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>📡</span> Comunicações e Ciberdefesa
-          </div>
-          <div class="bg-slate-800 p-4 rounded border border-slate-700 text-amber-400 flex items-center gap-2">
-            <span>💰</span> Direção de Finanças / Intendência
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ÁREA RESTRITA DO ESTADO-MAIOR (SISTEMA DE REGISTO DE EFETIVOS) -->
-  <main id="portal-confidencial" class="flex-grow hidden bg-slate-950 text-white py-12 px-4">
-    <div class="max-w-5xl mx-auto space-y-8">
-      
-      <div class="bg-red-950 border-2 border-red-600 p-6 rounded-xl shadow-2xl flex justify-between items-center">
-        <div>
-          <span class="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-1 rounded tracking-wider">SECRETO / RESERVADO</span>
-          <h2 class="text-2xl font-black mt-2">SISTEMA INTEGRADO DE REGISTO DE EFETIVOS MILITARES (EMGFA)</h2>
-          <p class="text-xs text-red-200 mt-1">Base de Dados Única para Exército, Armada, Força Aérea e Departamentos do EMGFA.</p>
-        </div>
-        <button onclick="sairAreaRestrita()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded">
-          Sair do Painel
-        </button>
-      </div>
-
-      <!-- FORMULÁRIO DE REGISTO -->
-      <div class="bg-slate-900 p-6 rounded-xl border border-amber-500/30 text-white max-w-4xl mx-auto shadow-2xl">
-        <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
-          <span class="text-3xl text-amber-400">★</span>
-          <div>
-            <h3 class="text-xl font-bold uppercase tracking-wide text-amber-400">Ficha de Registo Militar</h3>
-            <p class="text-xs text-slate-400">Ministério da Defesa Nacional — Guiné-Bissau</p>
-          </div>
-        </div>
-
-        <form id="form-registo-militar" class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">NIF Militar</label>
-              <input type="text" id="mil-nif" required placeholder="Ex: 109876543" class="w-full p-2.5 rounded bg-slate-950 border border-slate-700 text-sm text-white">
-            </div>
-            <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Nº de Matrícula</label>
-              <input type="text" id="mil-matricula" required placeholder="Ex: FARP-2026-0042" class="w-full p-2.5 rounded bg-slate-950 border border-slate-700 text-sm text-white">
-            </div>
-            <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Nome Completo</label>
-              <input type="text" id="mil-nome" required placeholder="Nome do Militar" class="w-full p-2.5 rounded bg-slate-950 border border-slate-700 text-sm text-white">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Ramo / Direção</label>
-              <select id="mil-ramo" class="w-full p-2.5 rounded bg-slate-950 border border-slate-700 text-sm text-amber-400 font-bold">
-                <option value="EMGFA">EMGFA (Estado-Maior General)</option>
-                <option value="Exército">Exército (Terrestre)</option>
-                <option value="Armada">Armada (Marinha de Guerra)</option>
-                <option value="Força Aérea">Força Aérea</option>
-                <option value="D-1 Pessoal">D-1: Pessoal e Mobilização</option>
-                <option value="D-2 Inteligência">D-2: Informação e Inteligência</option>
-                <option value="D-3 Operações">D-3: Operações e Treino</option>
-                <option value="D-4 Logística">D-4: Logística e Material</option>
-                <option value="Saúde Militar">Direção de Saúde Militar</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Patente / Posto</label>
-              <select id="mil-patente" class="w-full p-2.5 rounded bg-slate-950 border border-slate-700 text-sm text-white">
-                <option value="General de Exército">General de Exército / Almirante</option>
-                <option value="Brigadeiro-General">Brigadeiro-General</option>
-                <option value="Coronel">Coronel</option>
-                <option value="Tenente-Coronel">Tenente-Coronel</option>
-                <option value="Major">Major</option>
-                <option value="Capitão">Capitão</option>
-                <option value="Tenente">Tenente</option>
-                <option value="Sargento">Sargento</option>
-                <option value="Soldado">Soldado / Praça</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs uppercase font-bold text-slate-300 mb-1">Unidade / Região Militar</label>
-              <input type="text" id="mil-unidade" required placeholder="Ex: Batalhão de Safim / Região Bissau" class="w-full p-2.5 rounded bg-slate-950 border border-slate-700 text-sm text-white">
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-red-700 hover:bg-red-600 text-white font-black py-3.5 rounded uppercase tracking-wider text-sm shadow-xl border border-amber-400 transition-all">
-            💾 Submeter e Encriptar na Base de Dados (Supabase)
-          </button>
-        </form>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- RODAPÉ INSTITUCIONAL DAS FARP COM ASSINATURA -->
-  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-auto border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 space-y-2">
-      <p>© 2026 Estado-Maior General das Forças Armadas da Guiné-Bissau (EMGFA). Todos os direitos reservados.</p>
-      <p class="text-emerald-400 font-medium tracking-wide pt-1">
-        Desenvolvido por <span class="text-amber-400 font-bold uppercase">Lavi Duarte Indeque</span>
-      </p>
-    </div>
-  </footer>
-
-  <!-- LÓGICA E SCRIPT DO SUPABASE -->
-  <script>
-    const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co'; // Insira o seu URL real do Supabase
-    const SUPABASE_KEY = 'SUA_ANON_KEY_AQUI';            // Insira a sua Anon Key real
-    
-    let supabaseClient = null;
-    try {
-      if (!SUPABASE_URL.includes('SEU_PROJETO')) {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      }
-    } catch(e) {
-      console.log('Modo demonstração ativo');
-    }
-
-    const CHAVE_MESTRE_GOVERNO = "GN-GOV-2026-BISSAU";
-
-    function tentarEntrarAreaRestrita() {
-      const senha = prompt("🛡️ ACESSO INSTITUCIONAL RESERVADO (EMGFA)\nInsira a Chave Criptografada do Estado:");
-      if (senha === CHAVE_MESTRE_GOVERNO) {
-        document.getElementById('portal-publico').classList.add('hidden');
-        document.getElementById('portal-confidencial').classList.remove('hidden');
-      } else if (senha !== null) {
-        alert("❌ Credencial inválida! Tentativa registada pelo sistema.");
-      }
-    }
-
-    function sairAreaRestrita() {
-      document.getElementById('portal-confidencial').classList.add('hidden');
-      document.getElementById('portal-publico').classList.remove('hidden');
-    }
-
-    // REGISTO DE MILITAR NO SUPABASE
-    document.getElementById('form-registo-militar').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const dadosMilitar = {
-        nif_militar: document.getElementById('mil-nif').value,
-        numero_matricula: document.getElementById('mil-matricula').value,
-        nome_completo: document.getElementById('mil-nome').value,
-        ramo: document.getElementById('mil-ramo').value,
-        patente_posto: document.getElementById('mil-patente').value,
-        unidade_unidade_alocada: document.getElementById('mil-unidade').value
-      };
-
-      if (supabaseClient) {
-        const { data, error } = await supabaseClient
-          .from('efetivos_militares')
-          .insert([dadosMilitar]);
-
-        if (error) {
-          alert("❌ Erro ao gravar no Supabase: " + error.message);
-          return;
-        }
-      }
-
-      alert(`✅ MILITAR REGISTADO COM SUCESSO!\n\nMatrícula: ${dadosMilitar.numero_matricula}\nNome: ${dadosMilitar.nome_completo}\nRamo/Departamento: ${dadosMilitar.ramo}`);
-      document.getElementById('form-registo-militar').reset();
-    });
-  </script>
-</body>
-</html>
+          <div class="bg-slate-800 p-4 rounded border border-slate
