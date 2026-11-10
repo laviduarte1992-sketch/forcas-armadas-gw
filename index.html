@@ -26,9 +26,12 @@
       white-space: nowrap;
       animation: marquee 25s linear infinite;
     }
- 
-<!-- ECRÃ DE BLOQUEIO E ACESSO RESTRITO -->
-<div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0b131a; z-index: 999999; display: flex; justify-content: center; align-items: center;">
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
+
+  <!-- ECRÃ DE BLOQUEIO E ACESSO RESTRITO -->
+  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0b131a; z-index: 999999; display: flex; justify-content: center; align-items: center;">
     <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.8);">
         <h3 style="color: #c59b27; margin-bottom: 10px; letter-spacing: 1px; font-family: sans-serif; font-weight: bold; font-size: 18px;">EMGFA — ACESSO RESTRITO</h3>
         <p style="color: #a0aec0; font-size: 13px; margin-bottom: 25px; font-family: sans-serif;">Sistema Classificado. Introduza a credencial de segurança para aceder ao portal.</p>
@@ -39,9 +42,9 @@
         
         <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none; font-family: sans-serif;">Credencial inválida. Acesso negado.</p>
     </div>
-</div>
+  </div>
 
-<script>
+  <script>
     function checkPassword() {
         const masterPassword = "FA-GOV-2026-BISSAU"; 
         const inputVal = document.getElementById('access-password').value;
@@ -70,10 +73,7 @@
             });
         }
     });
-</script>
-  </style>
-  </head>
-<body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
+  </script>
 
   <!-- BARRA DE ALERTA DO ESTADO-MAIOR -->
   <div class="bg-red-700 text-white text-xs font-bold py-1.5 px-4 overflow-hidden shadow-inner flex items-center border-b border-red-800">
@@ -92,7 +92,6 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
       
       <div class="flex items-center space-x-3">
-        <!-- INSÍGNIA DAS FARP (Estrela Negra no Círculo Vermelho/Dourado) -->
         <div class="w-12 h-12 bg-red-700 rounded-full flex items-center justify-center border-2 border-amber-400 shadow-lg">
           <span class="text-2xl text-black font-black">★</span>
         </div>
@@ -102,7 +101,6 @@
         </div>
       </div>
       
-      <!-- RAMOS E DEPARTAMENTOS -->
       <nav class="flex flex-wrap items-center justify-center gap-4 text-xs font-bold uppercase tracking-wider">
         <a href="#inicio" class="hover:text-amber-400 transition-colors">Início</a>
         <a href="#ramos" class="hover:text-amber-400 transition-colors">Ramos Militar</a>
@@ -118,7 +116,6 @@
   <!-- PORTAL PRINCIPAL -->
   <main id="portal-publico" class="flex-grow">
     
-    <!-- BANNER DE DEFESA NACIONAL -->
     <section id="inicio" class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-black text-white py-20 px-4 text-center border-b border-slate-800">
       <div class="max-w-4xl mx-auto">
         <div class="w-24 h-24 mx-auto mb-6 bg-red-700 rounded-full flex items-center justify-center border-4 border-amber-400 shadow-2xl">
@@ -134,12 +131,10 @@
       </div>
     </section>
 
-    <!-- SECCÃO DOS RAMOS MILITARES -->
     <section id="ramos" class="max-w-7xl mx-auto px-4 py-14">
       <h2 class="text-2xl font-black text-amber-400 uppercase tracking-wide text-center mb-10">Ramos das Forças Armadas</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- EXÉRCITO -->
         <div class="bg-slate-900 p-6 rounded-xl border-t-4 border-emerald-600 shadow-xl">
           <div class="text-4xl mb-3">🪖</div>
           <h3 class="text-xl font-bold text-white uppercase mb-2">Exército (Terrestre)</h3>
@@ -148,7 +143,6 @@
           </p>
         </div>
 
-        <!-- ARMADA -->
         <div class="bg-slate-900 p-6 rounded-xl border-t-4 border-blue-600 shadow-xl">
           <div class="text-4xl mb-3">⚓</div>
           <h3 class="text-xl font-bold text-white uppercase mb-2">Armada (Marinha)</h3>
@@ -157,7 +151,6 @@
           </p>
         </div>
 
-        <!-- FORÇA AÉREA -->
         <div class="bg-slate-900 p-6 rounded-xl border-t-4 border-amber-500 shadow-xl">
           <div class="text-4xl mb-3">✈️</div>
           <h3 class="text-xl font-bold text-white uppercase mb-2">Força Aérea</h3>
@@ -168,7 +161,6 @@
       </div>
     </section>
 
-    <!-- DEPARTAMENTOS DO EMGFA -->
     <section id="departamentos" class="bg-slate-900 py-12 border-t border-slate-800">
       <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-xl font-black text-white uppercase tracking-wide mb-8 border-l-4 border-red-600 pl-3">
@@ -205,7 +197,6 @@
     </section>
   </main>
 
-  <!-- ÁREA RESTRITA DO ESTADO-MAIOR (SISTEMA DE REGISTO DE EFETIVOS) -->
   <main id="portal-confidencial" class="flex-grow hidden bg-slate-950 text-white py-12 px-4">
     <div class="max-w-5xl mx-auto space-y-8">
       
@@ -220,7 +211,6 @@
         </button>
       </div>
 
-      <!-- FORMULÁRIO DE REGISTO -->
       <div class="bg-slate-900 p-6 rounded-xl border border-amber-500/30 text-white max-w-4xl mx-auto shadow-2xl">
         <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
           <span class="text-3xl text-amber-400">★</span>
@@ -290,7 +280,6 @@
     </div>
   </main>
 
-  <!-- RODAPÉ INSTITUCIONAL DAS FARP COM ASSINATURA -->
   <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-auto border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 space-y-2">
       <p>© 2026 Estado-Maior General das Forças Armadas da Guiné-Bissau (EMGFA). Todos os direitos reservados.</p>
@@ -300,12 +289,10 @@
     </div>
   </footer>
 
-<!-- LÓGICA E SCRIPT DO SUPABASE -->
   <script>
-  const SUPABASE_URL = 'https://totagb-db.supabase.co'; // O teu URL real
-const SUPABASE_KEY = 'sb_publishable_1UyOPoQPhgdMWZ4lN6fxgQ_eKNQCop3';
+    const SUPABASE_URL = 'https://totagb-db.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_1UyOPoQPhgdMWZ4lN6fxgQ_eKNQCop3';
     
-    // CHAVE OFICIAL DAS FORÇAS ARMADAS (EMGFA)
     const CHAVE_MESTRE_GOVERNO = "FA-GOV-2026-BISSAU";
 
     let supabaseClient = null;
@@ -317,7 +304,6 @@ const SUPABASE_KEY = 'sb_publishable_1UyOPoQPhgdMWZ4lN6fxgQ_eKNQCop3';
       console.log('Modo demonstração ativo');
     }
 
-    // FUNÇÃO QUE O BOTÃO VERMELHO CHAMA (onclick="tentarEntrarAreaRestrita()")
     function tentarEntrarAreaRestrita() {
       const senha = prompt("🛡️ ACESSO INSTITUCIONAL RESERVADO (EMGFA)\nInsira a Chave Criptografada do Estado:");
       if (senha === CHAVE_MESTRE_GOVERNO) {
@@ -333,7 +319,6 @@ const SUPABASE_KEY = 'sb_publishable_1UyOPoQPhgdMWZ4lN6fxgQ_eKNQCop3';
       document.getElementById('portal-publico').classList.remove('hidden');
     }
 
-    // REGISTO DE MILITAR NO SUPABASE
     document.getElementById('form-registo-militar')?.addEventListener('submit', async (e) => {
       e.preventDefault();
 
