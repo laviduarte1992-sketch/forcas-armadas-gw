@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guarda Nacional & FARP | República da Guiné-Bissau</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SDK do Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <style>
+    .bg-gn-dark { background-color: #064e3b; }
+    .bg-gn-gold { background-color: #d97706; }
+    .text-gn-dark { color: #064e3b; }
+    .border-gn-dark { border-color: #064e3b; }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 25s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
+
+  <!-- BARRA DE ALERTA DE ÚLTIMA HORA -->
+  <div class="bg-amber-500 text-slate-900 text-xs font-bold py-1.5 px-4 overflow-hidden shadow-inner flex items-center border-b border-amber-600">
+    <span class="bg-red-700 text-white px-2 py-0.5 rounded text-[10px] uppercase font-black mr-3 shrink-0 tracking-wider">
+      🛡️ SISTEMA SEGURO DO ESTADO
+    </span>
+    <div class="overflow-hidden w-full relative">
+      <div class="animate-marquee">
+        Plataforma emcriptada de Gestão de Defesa Nacional e Efetivos das Forças Armadas (FARP) — República da Guiné-Bissau.
+      </div>
+    </div>
+  </div>
+
+  <!-- CABEÇALHO / NAVEGAÇÃO -->
+  <header class="bg-gn-dark text-white shadow-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+      
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 bg-emerald-950 rounded-full flex items-center justify-center border-2 border-amber-400 p-1 shadow-inner">
+          <span class="text-2xl text-amber-400 font-black">★</span>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-lg md:text-xl tracking-wider uppercase leading-tight">Guarda Nacional</h1>
+          <p class="text-xs text-emerald-200 tracking-wide">República da Guiné-Bissau</p>
+        </div>
+      </div>
+      
+      <nav class="flex flex-wrap items-center justify-center gap-4 text-sm font-medium">
+        <a href="#inicio" class="hover:text-amber-400 transition-colors">Início</a>
+        <a href="#noticias" class="hover:text-amber-400 transition-colors">Comunicados</a>
+        <a href="#contactos" class="hover:text-amber-400 transition-colors">Contactos</a>
+        
+        <a href="tel:112" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow">
+          <span>🚨</span> PIQUETE 112
+        </a>
+
+        <!-- BOTÃO DE ACESSO RESTRITO GOVERNAMENTAL -->
+        <button onclick="tentarEntrarAreaRestrita()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-4 py-1.5 rounded-lg text-xs shadow border border-amber-400 flex items-center gap-1">
+          <span>🔒</span> Área Confidencial (Governo / FARP)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PORTAL PÚBLICO -->
+  <main id="portal-publico" class="flex-grow">
+    <section id="inicio" class="relative bg-gn-dark text-white py-20 px-4 text-center border-b-4 border-amber-500 shadow-lg">
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <div class="w-20 h-20 mx-auto mb-6 bg-emerald-950/90 rounded-full flex items-center justify-center border-2 border-amber-400 shadow-xl">
+          <span class="text-5xl text-amber-400 font-black">★</span>
+        </div>
+        <h2 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">Honra, Pátria e Segurança</h2>
+        <p class="text-base md:text-xl text-emerald-100 max-w-2xl mx-auto leading-relaxed">
+          Portal Institucional Oficial da Guarda Nacional e Plataforma de Defesa da República da Guiné-Bissau.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACTOS -->
+    <section id="contactos" class="py-12 bg-white border-t border-gray-200">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-2xl font-bold text-gn-dark mb-6">Comando Geral</h2>
+        <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-200 space-y-2 text-sm text-gray-700">
+          <p class="font-bold text-base text-gn-dark">República da Guiné-Bissau - Bissau</p>
+          <p><span class="font-bold text-emerald-900">Emergências:</span> 112</p>
+          <p><span class="font-bold text-emerald-900">Gabinete:</span> comunicacao@guardanacional.gw</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ÁREA RESTRITA DO GOVERNO E REGISTO DAS FORÇAS ARMADAS (EMGFA) -->
+  <main id="portal-confidencial" class="flex-grow hidden bg-slate-900 text-white py-12 px-4">
+    <div class="max-w-5xl mx-auto space-y-8">
+      
+      <div class="bg-red-950 border-2 border-red-600 p-6 rounded-xl shadow-2xl flex justify-between items-center">
+        <div>
+          <span class="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-1 rounded">ACESSO DE SEGURANÇA MÁXIMO</span>
+          <h2 class="text-2xl font-black mt-2">PLATAFORMA DE REGISTO E DADOS DAS FORÇAS ARMADAS (FARP)</h2>
+          <p class="text-xs text-red-200 mt-1">Sessão Autenticada para o Estado-Maior General e Ministério da Defesa Nacional.</p>
+        </div>
+        <button onclick="sairAreaRestrita()" class="bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold px-4 py-2 rounded">
+          Sair do Painel
+        </button>
+      </div>
+
+      <!-- FORMULÁRIO DE REGISTO MILITAR (EMGFA) -->
+      <div class="bg-slate-800 p-6 rounded-xl border border-amber-500/30 text-white max-w-4xl mx-auto shadow-2xl">
+        <div class="flex items-center gap-3 border-b border-slate-700 pb-4 mb-6">
+          <span class="text-3xl text-amber-400">★</span>
+          <div>
+            <h3 class="text-xl font-bold uppercase tracking-wide text-amber-400">Registo Central de Efetivos Militares (EMGFA)</h3>
+            <p class="text-xs text-gray-400">República da Guiné-Bissau — Ministério da Defesa Nacional</p>
+          </div>
+        </div>
+
+        <form id="form-registo-militar" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs uppercase font-bold text-gray-300">NIF Militar</label>
+              <input type="text" id="mil-nif" required placeholder="Ex: 109876543" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs uppercase font-bold text-gray-300">Nº de Matrícula</label>
+              <input type="text" id="mil-matricula" required placeholder="Ex: FARP-2026-0042" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs uppercase font-bold text-gray-300">Nome Completo</label>
+              <input type="text" id="mil-nome" required placeholder="Nome do Militar" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-sm">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs uppercase font-bold text-gray-300">Ramo das Forças Armadas</label>
+              <select id="mil-ramo" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-sm text-amber-300 font-bold">
+                <option value="EMGFA">EMGFA (Estado-Maior General)</option>
+                <option value="Exército">Exército (Terrestre)</option>
+                <option value="Armada">Armada (Marinha de Guerra)</option>
+                <option value="Força Aérea">Força Aérea</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase font-bold text-gray-300">Patente / Posto</label>
+              <select id="mil-patente" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-sm">
+                <option value="Coronel">Coronel</option>
+                <option value="Tenente-Coronel">Tenente-Coronel</option>
+                <option value="Major">Major</option>
+                <option value="Capitão">Capitão</option>
+                <option value="Tenente">Tenente</option>
+                <option value="Sargento">Sargento</option>
+                <option value="Soldado">Soldado / Praça</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase font-bold text-gray-300">Região Militar / Unidade</label>
+              <input type="text" id="mil-unidade" required placeholder="Ex: Batalhão de Safim / Região Bissau" class="w-full p-2.5 rounded bg-slate-900 border border-slate-700 text-sm">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded uppercase tracking-wider text-sm shadow-lg transition-all">
+            💾 Gravar no Banco de Dados Supabase (FARP)
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- RODAPÉ COM ASSINATURA OFICIAL -->
+  <footer class="bg-slate-900 text-gray-400 py-6 text-center text-xs mt-auto border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p>© 2026 Comando Geral da Guarda Nacional e Forças Armadas da Guiné-Bissau.</p>
+      <p class="text-emerald-400 font-medium tracking-wide pt-1">
+        Desenvolvido por <span class="text-amber-400 font-bold uppercase">Lavi Duarte Indeque</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT INTEGRADO COM SUPABASE -->
+  <script>
+    const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co'; // Substitua pelo seu URL real
+    const SUPABASE_KEY = 'SUA_ANON_KEY_AQUI';            // Substitua pela sua Key real
+    
+    let supabaseClient = null;
+    try {
+      if (!SUPABASE_URL.includes('SEU_PROJETO')) {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+    } catch(e) {
+      console.log('Modo demonstração ativo');
+    }
+
+    const CHAVE_MESTRE_GOVERNO = "GN-GOV-2026-BISSAU";
+
+    function tentarEntrarAreaRestrita() {
+      const senha = prompt("🛡️ ACESSO INSTITUCIONAL RESTRITO (GOVERNO / FARP)\nInsira a Chave Criptografada:");
+      if (senha === CHAVE_MESTRE_GOVERNO) {
+        document.getElementById('portal-publico').classList.add('hidden');
+        document.getElementById('portal-confidencial').classList.remove('hidden');
+      } else if (senha !== null) {
+        alert("❌ Credencial inválida! Tentativa não autorizada.");
+      }
+    }
+
+    function sairAreaRestrita() {
+      document.getElementById('portal-confidencial').classList.add('hidden');
+      document.getElementById('portal-publico').classList.remove('hidden');
+    }
+
+    // SUBMIT DO FORMULÁRIO DE REGISTO MILITAR
+    document.getElementById('form-registo-militar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const dadosMilitar = {
+        nif_militar: document.getElementById('mil-nif').value,
+        numero_matricula: document.getElementById('mil-matricula').value,
+        nome_completo: document.getElementById('mil-nome').value,
+        ramo: document.getElementById('mil-ramo').value,
+        patente_posto: document.getElementById('mil-patente').value,
+        unidade_unidade_alocada: document.getElementById('mil-unidade').value
+      };
+
+      if (supabaseClient) {
+        const { data, error } = await supabaseClient
+          .from('efetivos_militares')
+          .insert([dadosMilitar]);
+
+        if (error) {
+          alert("❌ Erro ao gravar no Supabase: " + error.message);
+          return;
+        }
+      }
+
+      alert(`✅ MILITAR GRAVADO COM SUCESSO NA BASE DE DADOS!\n\nMatrícula: ${dadosMilitar.numero_matricula}\nNome: ${dadosMilitar.nome_completo}\nRamo: ${dadosMilitar.ramo}`);
+      document.getElementById('form-registo-militar').reset();
+    });
+  </script>
+</body>
+</html>
