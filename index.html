@@ -39,8 +39,38 @@
             <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none;">Credencial inválida. Acesso negado.</p>
         </div>
     </div>
+    <script>
+        function checkPassword() {
+            const masterPassword = "FA-GOV-2026-BISSAU"; 
+            const inputVal = document.getElementById('access-password').value;
+            
+            if (inputVal === masterPassword) {
+                const overlay = document.getElementById('auth-overlay');
+                overlay.style.transition = "opacity 0.4s ease";
+                overlay.style.opacity = "0";
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                }, 400);
+            } else {
+                const errorMsg = document.getElementById('error-msg');
+                errorMsg.style.display = "block";
+                document.getElementById('access-password').value = "";
+            }
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const pwdInput = document.getElementById('access-password');
+            if (pwdInput) {
+                pwdInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+        });
+    </script>
   </style>
-</head>
+  </head>
 <body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
 
   <!-- BARRA DE ALERTA DO ESTADO-MAIOR -->
