@@ -30,9 +30,9 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans flex flex-col min-h-screen">
 
-  <!-- ECRÃ DE BLOQUEIO E ACESSO RESTRITO -->
-  <div id="auth-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0b131a; z-index: 999999; display: flex; justify-content: center; align-items: center;">
-    <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.8);">
+  <!-- ECRÃ DE BLOQUEIO E ACESSO RESTRITO (OBLIGATÓRIO NO TOPO) -->
+  <div id="auth-overlay" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: #070c12 !important; z-index: 2147483647 !important; display: flex !important; justify-content: center !important; align-items: center !important;">
+    <div style="background: #111d29; padding: 40px; border-radius: 8px; border: 1px solid #c59b27; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
         <h3 style="color: #c59b27; margin-bottom: 10px; letter-spacing: 1px; font-family: sans-serif; font-weight: bold; font-size: 18px;">EMGFA — ACESSO RESTRITO</h3>
         <p style="color: #a0aec0; font-size: 13px; margin-bottom: 25px; font-family: sans-serif;">Sistema Classificado. Introduza a credencial de segurança para aceder ao portal.</p>
         
