@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head> 
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EMGFA | Forças Armadas Revolucionárias do Povo — Guiné-Bissau</title>
@@ -9,6 +9,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SDK do Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Face-API.js para Biometria Facial -->
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
   
   <style>
     .bg-farp-red { background-color: #dc2626; }
@@ -44,36 +46,60 @@
     </div>
   </div>
 
-  <script>
-    function checkPassword() {
-        const masterPassword = "FA-GOV-2026-BISSAU"; 
-        const inputVal = document.getElementById('access-password').value;
-        
-        if (inputVal === masterPassword) {
-            const overlay = document.getElementById('auth-overlay');
-            overlay.style.transition = "opacity 0.4s ease";
-            overlay.style.opacity = "0";
-            setTimeout(() => {
-                overlay.style.display = "none";
-            }, 400);
-        } else {
-            const errorMsg = document.getElementById('error-msg');
-            errorMsg.style.display = "block";
-            document.getElementById('access-password').value = "";
-        }
-    }
-    
-    document.addEventListener("DOMContentLoaded", function() {
-        const pwdInput = document.getElementById('access-password');
-        if (pwdInput) {
-            pwdInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-        }
-    });
-  </script>
+  <!-- MODAL DE DEMONSTRAÇÃO DE RECONHECIMENTO FACIAL (NO MESMO FICHEIRO) -->
+  <div id="modal-demo-biometria" class="fixed inset-0 bg-black/85 z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-amber-500 rounded-xl max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-black uppercase text-amber-400">🧬 Demonstração de Reconhecimento Facial (EMGFA)</h3>
+          <p class="text-[11px] text-slate-400">Prototipo local no navegador — evolui para validação permanente após acordo institucional</p>
+        </div>
+        <button onclick="fecharDemoBiometria()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded">
+          ✕ Fechar
+        </button>
+      </div>
+
+      <div id="demo-bio-status" class="bg-amber-500/10 border border-amber-500/40 text-amber-300 p-2.5 rounded text-xs font-bold text-center">
+        ⏳ Aguardando abertura ou carregamento dos modelos faciais...
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-3">
+          <div class="relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-slate-700">
+            <video id="demo-video" autoplay muted playsinline class="w-full h-full object-cover"></video>
+            <canvas id="demo-overlay" class="absolute top-0 left-0 w-full h-full"></canvas>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" onclick="iniciarCamaraDemo()" class="flex-1 bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2 rounded text-xs uppercase">
+              📷 Ligar Câmara
+            </button>
+            <button type="button" onclick="capturarRostoDemo()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2 rounded text-xs uppercase">
+              🧬 Capturar Base
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 flex flex-col justify-between space-y-3">
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] uppercase font-bold text-slate-400 mb-1">Referência Militar (Demo)</label>
+              <input type="text" id="demo-militar-ref" value="Agente / Militar — FARP-DEMO" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+            </div>
+            <div id="demo-assinatura-info" class="p-3 rounded bg-slate-900 border border-slate-800 text-xs text-slate-400">
+              Assinatura: <span class="text-red-400 font-bold">Nenhuma captura feita</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <button type="button" onclick="verificarRostoDemo()" class="w-full bg-red-700 hover:bg-red-600 text-white font-black py-2.5 rounded uppercase text-xs border border-amber-400">
+              🛡️ Testar Correspondência Facial
+            </button>
+            <div id="demo-resultado" class="hidden p-3 rounded text-center text-xs font-bold"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- BARRA DE ALERTA DO ESTADO-MAIOR -->
   <div class="bg-red-700 text-white text-xs font-bold py-1.5 px-4 overflow-hidden shadow-inner flex items-center border-b border-red-800">
@@ -88,7 +114,7 @@
   </div>
 
   <!-- CABEÇALHO MILITAR / NAVEGAÇÃO -->
-  <header class="bg-slate-900 border-b-2 border-amber-500 text-white shadow-2xl sticky top-0 z-50">
+  <header class="bg-slate-900 border-b-2 border-amber-500 text-white shadow-2xl sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
       
       <div class="flex items-center space-x-3">
@@ -105,6 +131,9 @@
         <a href="#inicio" class="hover:text-amber-400 transition-colors">Início</a>
         <a href="#ramos" class="hover:text-amber-400 transition-colors">Ramos Militar</a>
         <a href="#departamentos" class="hover:text-amber-400 transition-colors">Departamentos</a>
+        <button type="button" onclick="abrirDemoBiometria()" class="text-amber-400 hover:text-amber-300 transition-colors border border-amber-500/40 px-3 py-1.5 rounded">
+          🧬 Demo Biometria
+        </button>
         
         <button onclick="tentarEntrarAreaRestrita()" class="bg-red-700 hover:bg-red-600 text-white font-black px-4 py-2 rounded shadow-md border border-amber-400 flex items-center gap-1.5 transition-transform transform hover:scale-105">
           <span>🔒</span> BASE DE DADOS SEGURA (EMGFA)
@@ -197,6 +226,7 @@
     </section>
   </main>
 
+  <!-- ÁREA CONFIDENCIAL -->
   <main id="portal-confidencial" class="flex-grow hidden bg-slate-950 text-white py-12 px-4">
     <div class="max-w-5xl mx-auto space-y-8">
       
@@ -204,7 +234,7 @@
         <div>
           <span class="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-1 rounded tracking-wider">SECRETO / RESERVADO</span>
           <h2 class="text-2xl font-black mt-2">SISTEMA INTEGRADO DE REGISTO DE EFETIVOS MILITARES (EMGFA)</h2>
-          <p class="text-xs text-red-200 mt-1">Base de Dados Única para Exército, Armada, Força Aérea e Departamentos do EMGFA.</p>
+          <p class="text-xs text-red-200 mt-1">Base de Dados Única e Registo Biométrico para Exército, Armada, Força Aérea e Departamentos.</p>
         </div>
         <button onclick="sairAreaRestrita()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded">
           Sair do Painel
@@ -215,7 +245,7 @@
         <div class="flex items-center gap-3 border-b border-slate-800 pb-4 mb-6">
           <span class="text-3xl text-amber-400">★</span>
           <div>
-            <h3 class="text-xl font-bold uppercase tracking-wide text-amber-400">Ficha de Registo Militar</h3>
+            <h3 class="text-xl font-bold uppercase tracking-wide text-amber-400">Ficha de Registo Militar & Biometria</h3>
             <p class="text-xs text-slate-400">Ministério da Defesa Nacional — Guiné-Bissau</p>
           </div>
         </div>
@@ -271,6 +301,27 @@
             </div>
           </div>
 
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-black uppercase text-amber-400">🧬 Registo Biométrico Facial (Demo)</span>
+              <span id="bio-status-ficha" class="text-[11px] text-slate-400">Não capturado</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+              <div class="aspect-video bg-black rounded border border-slate-700 overflow-hidden flex items-center justify-center">
+                <video id="video-ficha" autoplay muted playsinline class="w-full h-full object-cover"></video>
+              </div>
+              <div class="space-y-2">
+                <button type="button" onclick="ativarCamaraFicha()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 rounded text-xs uppercase">
+                  📷 Ligar Câmara Biométrica
+                </button>
+                <button type="button" onclick="capturarBiometriaFicha()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2 rounded text-xs uppercase">
+                  🎯 Extrair Assinatura Facial
+                </button>
+              </div>
+            </div>
+          </div>
+
           <button type="submit" class="w-full bg-red-700 hover:bg-red-600 text-white font-black py-3.5 rounded uppercase tracking-wider text-sm shadow-xl border border-amber-400 transition-all">
             💾 Submeter e Encriptar na Base de Dados (Supabase)
           </button>
@@ -292,8 +343,14 @@
   <script>
     const SUPABASE_URL = 'https://totagb-db.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_1UyOPoQPhgdMWZ4lN6fxgQ_eKNQCop3';
-    
     const CHAVE_MESTRE_GOVERNO = "FA-GOV-2026-BISSAU";
+    const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+
+    let modelosCarregados = false;
+    let vetorFacialFicha = null;
+    let descritorDemoGuardado = null;
+    let nomeDemoGuardado = "";
+    let intervaloDemo = null;
 
     let supabaseClient = null;
     try {
@@ -302,6 +359,143 @@
       }
     } catch(e) {
       console.log('Modo demonstração ativo');
+    }
+
+    function checkPassword() {
+      const masterPassword = "FA-GOV-2026-BISSAU";
+      const inputVal = document.getElementById('access-password').value;
+      if (inputVal === masterPassword) {
+        const overlay = document.getElementById('auth-overlay');
+        overlay.style.transition = "opacity 0.4s ease";
+        overlay.style.opacity = "0";
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 400);
+      } else {
+        document.getElementById('error-msg').style.display = "block";
+        document.getElementById('access-password').value = "";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const pwdInput = document.getElementById('access-password');
+      if (pwdInput) {
+        pwdInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') checkPassword();
+        });
+      }
+    });
+
+    async function garantirModelosIA() {
+      if (modelosCarregados) return true;
+      const statusDemo = document.getElementById('demo-bio-status');
+      try {
+        if (statusDemo) statusDemo.innerText = "⏳ A carregar motores de IA facial...";
+        await Promise.all([
+          faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+        ]);
+        modelosCarregados = true;
+        if (statusDemo) {
+          statusDemo.className = "bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 p-2.5 rounded text-xs font-bold text-center";
+          statusDemo.innerText = "✅ Motores de IA prontos. Ligue a câmara para testar.";
+        }
+        return true;
+      } catch (err) {
+        if (statusDemo) {
+          statusDemo.className = "bg-red-500/10 border border-red-500/40 text-red-300 p-2.5 rounded text-xs font-bold text-center";
+          statusDemo.innerText = "❌ Erro ao carregar IA: " + err.message;
+        }
+        return false;
+      }
+    }
+
+    async function abrirDemoBiometria() {
+      const modal = document.getElementById('modal-demo-biometria');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      await garantirModelosIA();
+    }
+
+    function fecharDemoBiometria() {
+      const modal = document.getElementById('modal-demo-biometria');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      if (intervaloDemo) clearInterval(intervaloDemo);
+      const video = document.getElementById('demo-video');
+      if (video && video.srcObject) {
+        video.srcObject.getTracks().forEach(t => t.stop());
+        video.srcObject = null;
+      }
+    }
+
+    async function iniciarCamaraDemo() {
+      const ok = await garantirModelosIA();
+      if (!ok) return;
+      const video = document.getElementById('demo-video');
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.addEventListener('play', () => {
+          const canvas = document.getElementById('demo-overlay');
+          const size = { width: video.clientWidth, height: video.clientHeight };
+          faceapi.matchDimensions(canvas, size);
+          if (intervaloDemo) clearInterval(intervaloDemo);
+          intervaloDemo = setInterval(async () => {
+            const dets = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
+            const res = faceapi.resizeResults(dets, size);
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            faceapi.draw.drawDetections(canvas, res);
+          }, 220);
+        });
+      } catch (err) {
+        alert("Erro ao ligar câmara: " + err.message);
+      }
+    }
+
+    async function capturarRostoDemo() {
+      const video = document.getElementById('demo-video');
+      const det = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+      if (!det) {
+        alert("⚠️ Nenhum rosto detetado.");
+        return;
+      }
+      descritorDemoGuardado = det.descriptor;
+      nomeDemoGuardado = document.getElementById('demo-militar-ref').value;
+      document.getElementById('demo-assinatura-info').innerHTML = `
+        Assinatura: <span class="text-emerald-400 font-bold">Vetor Capturado (128 pts)</span><br>
+        <span class="text-[11px] text-slate-300">${nomeDemoGuardado}</span>
+      `;
+    }
+
+    async function verificarRostoDemo() {
+      if (!descritorDemoGuardado) {
+        alert("Capture primeiro um rosto base.");
+        return;
+      }
+      const video = document.getElementById('demo-video');
+      const box = document.getElementById('demo-resultado');
+      const det = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+      box.classList.remove('hidden');
+      if (!det) {
+        box.className = "p-3 rounded text-center text-xs font-bold bg-amber-950 border border-amber-500 text-amber-300";
+        box.innerText = "⚠️ Posicione o rosto frente à câmara.";
+        return;
+      }
+      const dist = faceapi.euclideanDistance(descritorDemoGuardado, det.descriptor);
+      const pct = Math.max(0, Math.round((1 - dist) * 100));
+      if (dist < 0.55) {
+        box.className = "p-3 rounded text-center text-xs font-bold bg-emerald-950 border border-emerald-500 text-emerald-300";
+        box.innerHTML = `✅ COMPATÍVEL (${pct}%) — ${nomeDemoGuardado}`;
+      } else {
+        box.className = "p-3 rounded text-center text-xs font-bold bg-red-950 border border-red-500 text-red-300";
+        box.innerText = `❌ NÃO CORRESPONDE (${pct}%)`;
+      }
     }
 
     function tentarEntrarAreaRestrita() {
@@ -317,6 +511,44 @@
     function sairAreaRestrita() {
       document.getElementById('portal-confidencial').classList.add('hidden');
       document.getElementById('portal-publico').classList.remove('hidden');
+    }
+
+    async function ativarCamaraFicha() {
+      const status = document.getElementById('bio-status-ficha');
+      status.innerText = "⏳ A carregar IA...";
+      const ok = await garantirModelosIA();
+      if (!ok) {
+        status.innerText = "❌ Erro IA";
+        return;
+      }
+      try {
+        const video = document.getElementById('video-ficha');
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        status.innerText = "🟢 Câmara ativa";
+      } catch (err) {
+        status.innerText = "❌ Erro câmara";
+        alert("Não foi possível ativar a câmara: " + err.message);
+      }
+    }
+
+    async function capturarBiometriaFicha() {
+      if (!modelosCarregados) {
+        alert("Ligue primeiro a câmara biométrica.");
+        return;
+      }
+      const video = document.getElementById('video-ficha');
+      const det = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+
+      if (!det) {
+        alert("⚠️ Nenhum rosto detetado!");
+        return;
+      }
+
+      vetorFacialFicha = Array.from(det.descriptor);
+      document.getElementById('bio-status-ficha').innerHTML = `<span class="text-emerald-400 font-bold">✅ Assinatura Facial Capturada</span>`;
     }
 
     document.getElementById('form-registo-militar')?.addEventListener('submit', async (e) => {
@@ -342,8 +574,12 @@
         }
       }
 
-      alert(`✅ MILITAR REGISTADO COM SUCESSO!\n\nMatrícula: ${dadosMilitar.numero_matricula}\nNome: ${dadosMilitar.nome_completo}\nRamo/Departamento: ${dadosMilitar.ramo}`);
+      const infoBio = vetorFacialFicha ? "\nBiometria Facial: ✅ Anexada (128 pontos)" : "\nBiometria Facial: Não anexada";
+      alert(`✅ MILITAR REGISTADO COM SUCESSO!\n\nMatrícula: ${dadosMilitar.numero_matricula}\nNome: ${dadosMilitar.nome_completo}\nRamo/Departamento: ${dadosMilitar.ramo}${infoBio}`);
+      
       document.getElementById('form-registo-militar').reset();
+      vetorFacialFicha = null;
+      document.getElementById('bio-status-ficha').innerText = "Não capturado";
     });
   </script>
 </body>
