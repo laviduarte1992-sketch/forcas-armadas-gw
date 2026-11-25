@@ -40,13 +40,49 @@
         
         <input type="password" id="access-password" placeholder="Palavra-passe de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; background: #070c12; border: 1px solid #2d3748; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px; outline: none;">
         
-        <button type="button" onclick="checkPassword()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Desbloquear Sistema</button>
+        <button type="button" id="btn-desbloquear" onclick="window.desbloquearEMGFA()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Desbloquear Sistema</button>
         
         <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none; font-family: sans-serif;">Credencial inválida. Acesso negado.</p>
     </div>
   </div>
 
-  <!-- MODAL DE DEMONSTRAÇÃO DE RECONHECIMENTO FACIAL (NO MESMO FICHEIRO) -->
+  <!-- DESBLOQUEIO IMEDIATO INDEPENDENTE -->
+  <script>
+    window.desbloquearEMGFA = function() {
+      var input = document.getElementById('access-password');
+      var erro = document.getElementById('error-msg');
+      var overlay = document.getElementById('auth-overlay');
+      if (!input || !overlay) return;
+
+      var valor = (input.value || '').trim();
+      if (valor === 'FA-GOV-2026-BISSAU') {
+        if (erro) erro.style.display = 'none';
+        overlay.style.setProperty('display', 'none', 'important');
+      } else {
+        if (erro) {
+          erro.textContent = 'Credencial inválida. Acesso negado.';
+          erro.style.display = 'block';
+        }
+        input.value = '';
+        input.focus();
+      }
+    };
+
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.id === 'btn-desbloquear') {
+        window.desbloquearEMGFA();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'access-password') {
+        e.preventDefault();
+        window.desbloquearEMGFA();
+      }
+    });
+  </script>
+
+  <!-- MODAL DE DEMONSTRAÇÃO DE RECONHECIMENTO FACIAL -->
   <div id="modal-demo-biometria" class="fixed inset-0 bg-black/85 z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border-2 border-amber-500 rounded-xl max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -54,4 +90,13 @@
           <h3 class="text-base font-black uppercase text-amber-400">🧬 Demonstração de Reconhecimento Facial (EMGFA)</h3>
           <p class="text-[11px] text-slate-400">Protótipo local no navegador — evolui para validação permanente após acordo institucional</p>
         </div>
-        <button type="button" onclick="fecharDemoBiometria()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px
+        <button type="button" onclick="fecharDemoBiometria()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded">
+          ✕ Fechar
+        </button>
+      </div>
+
+      <div id="demo-bio-status" class="bg-amber-500/10 border border-amber-500/40 text-amber-300 p-2.5 rounded text-xs font-bold text-center">
+        ⏳ Aguardando abertura ou carregamento dos modelos faciais...
+      </div>
+
+      <div class="grid grid-cols-
