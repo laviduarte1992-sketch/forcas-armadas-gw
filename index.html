@@ -10,7 +10,7 @@
   <!-- SDK do Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Face-API.js para Biometria Facial -->
-  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
   
   <style>
     .bg-farp-red { background-color: #dc2626; }
@@ -40,13 +40,49 @@
         
         <input type="password" id="access-password" placeholder="Palavra-passe de acesso" style="width: 100%; padding: 12px; margin-bottom: 15px; background: #070c12; border: 1px solid #2d3748; color: #fff; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px; outline: none;">
         
-        <button onclick="checkPassword()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Desbloquear Sistema</button>
+        <button type="button" id="btn-desbloquear" onclick="window.desbloquearEMGFA()" style="width: 100%; padding: 12px; background: #c59b27; color: #070c12; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Desbloquear Sistema</button>
         
         <p id="error-msg" style="color: #e53e3e; font-size: 12px; margin-top: 15px; display: none; font-family: sans-serif;">Credencial inválida. Acesso negado.</p>
     </div>
   </div>
 
-  <!-- MODAL DE DEMONSTRAÇÃO DE RECONHECIMENTO FACIAL (NO MESMO FICHEIRO) -->
+  <!-- DESBLOQUEIO IMEDIATO INDEPENDENTE -->
+  <script>
+    window.desbloquearEMGFA = function() {
+      var input = document.getElementById('access-password');
+      var erro = document.getElementById('error-msg');
+      var overlay = document.getElementById('auth-overlay');
+      if (!input || !overlay) return;
+
+      var valor = (input.value || '').trim();
+      if (valor === 'FA-GOV-2026-BISSAU') {
+        if (erro) erro.style.display = 'none';
+        overlay.style.setProperty('display', 'none', 'important');
+      } else {
+        if (erro) {
+          erro.textContent = 'Credencial inválida. Acesso negado.';
+          erro.style.display = 'block';
+        }
+        input.value = '';
+        input.focus();
+      }
+    };
+
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.id === 'btn-desbloquear') {
+        window.desbloquearEMGFA();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'access-password') {
+        e.preventDefault();
+        window.desbloquearEMGFA();
+      }
+    });
+  </script>
+
+  <!-- MODAL DE DEMONSTRAÇÃO DE RECONHECIMENTO FACIAL -->
   <div id="modal-demo-biometria" class="fixed inset-0 bg-black/85 z-50 hidden items-center justify-center p-4">
     <div class="bg-slate-900 border-2 border-amber-500 rounded-xl max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -54,7 +90,7 @@
           <h3 class="text-base font-black uppercase text-amber-400">🧬 Demonstração de Reconhecimento Facial (EMGFA)</h3>
           <p class="text-[11px] text-slate-400">Protótipo local no navegador — evolui para validação permanente após acordo institucional</p>
         </div>
-        <button onclick="fecharDemoBiometria()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded">
+        <button type="button" onclick="fecharDemoBiometria()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded">
           ✕ Fechar
         </button>
       </div>
@@ -138,7 +174,7 @@
           🧬 Demo Biometria
         </button>
         
-        <button onclick="tentarEntrarAreaRestrita()" class="bg-red-700 hover:bg-red-600 text-white font-black px-4 py-2 rounded shadow-md border border-amber-400 flex items-center gap-1.5 transition-transform transform hover:scale-105">
+        <button type="button" onclick="tentarEntrarAreaRestrita()" class="bg-red-700 hover:bg-red-600 text-white font-black px-4 py-2 rounded shadow-md border border-amber-400 flex items-center gap-1.5 transition-transform transform hover:scale-105">
           <span>🔒</span> BASE DE DADOS SEGURA (EMGFA)
         </button>
       </nav>
@@ -237,9 +273,9 @@
         <div>
           <span class="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-1 rounded tracking-wider">SECRETO / RESERVADO</span>
           <h2 class="text-2xl font-black mt-2">SISTEMA INTEGRADO DE REGISTO DE EFETIVOS MILITARES (EMGFA)</h2>
-          <p class="text-xs text-red-200 mt-1">Base de Dados Única e Registo Biométrico para Exército, Armada, Força Aérea e Departamentos.</p>
+          <p class="text-xs text-red-200 mt-1">Base de Dados Única e Registo Biométrico Multimodal para Exército, Armada, Força Aérea e Departamentos.</p>
         </div>
-        <button onclick="sairAreaRestrita()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded">
+        <button type="button" onclick="sairAreaRestrita()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2 rounded">
           Sair do Painel
         </button>
       </div>
@@ -304,9 +340,10 @@
             </div>
           </div>
 
+          <!-- BIOMETRIA FACIAL -->
           <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-3">
             <div class="flex justify-between items-center">
-              <span class="text-xs font-black uppercase text-amber-400">🧬 Registo Biométrico Facial (Demo)</span>
+              <span class="text-xs font-black uppercase text-amber-400">🧬 1. Registo Biométrico Facial</span>
               <span id="bio-status-ficha" class="text-[11px] text-slate-400">Não capturado</span>
             </div>
             
@@ -328,6 +365,35 @@
                 </button>
               </div>
             </div>
+          </div>
+
+          <!-- BIOMETRIA DIGITAL (DEDO) -->
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-black uppercase text-amber-400">👆 2. Registo de Impressão Digital (Dedo)</span>
+              <span id="digital-status-ficha" class="text-[11px] text-slate-400">Não capturado</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+              <div>
+                <label class="block text-[11px] uppercase font-bold text-slate-400 mb-1">Dedo Selecionado</label>
+                <select id="mil-dedo" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  <option value="Polegar Direito">Polegar Direito</option>
+                  <option value="Indicador Direito">Indicador Direito</option>
+                  <option value="Polegar Esquerdo">Polegar Esquerdo</option>
+                  <option value="Indicador Esquerdo">Indicador Esquerdo</option>
+                </select>
+              </div>
+              <button type="button" onclick="capturarImpressaoDigital()" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2 px-3 rounded text-xs uppercase">
+                👆 Ler Sensor Biométrico
+              </button>
+              <button type="button" onclick="simularImpressaoDigitalDemo()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold py-2 px-3 rounded text-xs uppercase border border-amber-500/40">
+                🧪 Simular Leitor (Demo)
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-400">
+              Nota: No protótipo utiliza o sensor biométrico nativo do dispositivo (Windows Hello / Touch ID) ou simulação; na implantação final integra diretamente com leitores ópticos USB dedicados das unidades.
+            </p>
           </div>
 
           <button type="submit" class="w-full bg-red-700 hover:bg-red-600 text-white font-black py-3.5 rounded uppercase tracking-wider text-sm shadow-xl border border-amber-400 transition-all">
@@ -383,19 +449,23 @@
 
     let modelosCarregados = false;
     let vetorFacialFicha = null;
+    let impressaoDigitalFicha = null;
     let descritorDemoGuardado = null;
     let nomeDemoGuardado = "";
     let intervaloDemo = null;
     let logsAuditoria = [];
     let modoCamaraDemo = "user";
     let modoCamaraFicha = "user";
+    let listaCamaras = [];
+    let indiceCamaraDemo = 0;
+    let indiceCamaraFicha = 0;
 
     let supabaseClient = null;
     try {
-      if (!SUPABASE_URL.includes('SEU_PROJETO')) {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      if (window.supabase && !SUPABASE_URL.includes('SEU_PROJETO')) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
-    } catch(e) {
+    } catch (e) {
       console.log('Modo demonstração ativo');
     }
 
@@ -457,30 +527,8 @@
       renderizarLogsAuditoria();
     }
 
-    function checkPassword() {
-      const masterPassword = "FA-GOV-2026-BISSAU";
-      const inputVal = document.getElementById('access-password').value;
-      if (inputVal === masterPassword) {
-        const overlay = document.getElementById('auth-overlay');
-        overlay.style.transition = "opacity 0.4s ease";
-        overlay.style.opacity = "0";
-        setTimeout(() => {
-          overlay.style.display = "none";
-        }, 400);
-      } else {
-        document.getElementById('error-msg').style.display = "block";
-        document.getElementById('access-password').value = "";
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
+    window.addEventListener("DOMContentLoaded", function() {
       renderizarLogsAuditoria();
-      const pwdInput = document.getElementById('access-password');
-      if (pwdInput) {
-        pwdInput.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') checkPassword();
-        });
-      }
     });
 
     function pararStreamVideo(videoEl) {
@@ -490,7 +538,24 @@
       }
     }
 
-    async function obterStreamCamara(modoPreferido) {
+    async function atualizarListaCamaras() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return [];
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      listaCamaras = devices.filter(d => d.kind === 'videoinput');
+      return listaCamaras;
+    }
+
+    async function obterStreamCamara(modoPreferido, deviceIdForcado = null) {
+      if (deviceIdForcado) {
+        try {
+          return await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: { exact: deviceIdForcado } },
+            audio: false
+          });
+        } catch (err) {
+          // Continua para fallback
+        }
+      }
       try {
         return await navigator.mediaDevices.getUserMedia({
           video: { facingMode: { ideal: modoPreferido } },
@@ -502,6 +567,10 @@
     }
 
     async function garantirModelosIA() {
+      if (typeof faceapi === "undefined") {
+        alert("A biblioteca facial ainda está a carregar. Aguarde 2 segundos e tente novamente.");
+        return false;
+      }
       if (modelosCarregados) return true;
       const statusDemo = document.getElementById('demo-bio-status');
       try {
@@ -541,7 +610,7 @@
       pararStreamVideo(document.getElementById('demo-video'));
     }
 
-    async function iniciarCamaraDemo(modo = modoCamaraDemo) {
+    async function iniciarCamaraDemo(modo = modoCamaraDemo, deviceId = null) {
       const ok = await garantirModelosIA();
       if (!ok) return;
       modoCamaraDemo = modo;
@@ -551,8 +620,10 @@
       pararStreamVideo(video);
 
       try {
-        const stream = await obterStreamCamara(modoCamaraDemo);
+        const stream = await obterStreamCamara(modoCamaraDemo, deviceId);
         video.srcObject = stream;
+        await atualizarListaCamaras();
+
         video.onloadedmetadata = () => {
           video.play();
           const canvas = document.getElementById('demo-overlay');
@@ -572,8 +643,14 @@
     }
 
     async function alternarCamaraDemo() {
-      const proximoModo = modoCamaraDemo === "user" ? "environment" : "user";
-      await iniciarCamaraDemo(proximoModo);
+      await atualizarListaCamaras();
+      if (listaCamaras.length > 1) {
+        indiceCamaraDemo = (indiceCamaraDemo + 1) % listaCamaras.length;
+        await iniciarCamaraDemo(modoCamaraDemo, listaCamaras[indiceCamaraDemo].deviceId);
+      } else {
+        const proximoModo = modoCamaraDemo === "user" ? "environment" : "user";
+        await iniciarCamaraDemo(proximoModo);
+      }
     }
 
     async function capturarRostoDemo() {
@@ -626,7 +703,7 @@
 
     function tentarEntrarAreaRestrita() {
       const senha = prompt("🛡️ ACESSO INSTITUCIONAL RESERVADO (EMGFA)\nInsira a Chave Criptografada do Estado:");
-      if (senha === CHAVE_MESTRE_GOVERNO) {
+      if (senha && senha.trim() === CHAVE_MESTRE_GOVERNO) {
         document.getElementById('portal-publico').classList.add('hidden');
         document.getElementById('portal-confidencial').classList.remove('hidden');
         registarLogAuditoria("Acesso ao Painel Confidencial", "Operador Autorizado (EMGFA)", "AUTORIZADO", "ok");
@@ -641,7 +718,7 @@
       document.getElementById('portal-publico').classList.remove('hidden');
     }
 
-    async function ativarCamaraFicha(modo = modoCamaraFicha) {
+    async function ativarCamaraFicha(modo = modoCamaraFicha, deviceId = null) {
       const status = document.getElementById('bio-status-ficha');
       status.innerText = "⏳ A carregar IA...";
       const ok = await garantirModelosIA();
@@ -654,10 +731,15 @@
       pararStreamVideo(video);
 
       try {
-        const stream = await obterStreamCamara(modoCamaraFicha);
+        const stream = await obterStreamCamara(modoCamaraFicha, deviceId);
         video.srcObject = stream;
+        await atualizarListaCamaras();
         await video.play();
-        status.innerText = modoCamaraFicha === "environment" ? "🟢 Câmara traseira ativa" : "🟢 Câmara frontal ativa";
+        if (listaCamaras.length > 1) {
+          status.innerText = `🟢 Câmara ${indiceCamaraFicha + 1}/${listaCamaras.length} ativa`;
+        } else {
+          status.innerText = modoCamaraFicha === "environment" ? "🟢 Câmara traseira ativa" : "🟢 Câmara frontal ativa";
+        }
       } catch (err) {
         status.innerText = "❌ Erro câmara";
         alert("Não foi possível ativar a câmara: " + err.message);
@@ -665,8 +747,14 @@
     }
 
     async function alternarCamaraFicha() {
-      const proximoModo = modoCamaraFicha === "user" ? "environment" : "user";
-      await ativarCamaraFicha(proximoModo);
+      await atualizarListaCamaras();
+      if (listaCamaras.length > 1) {
+        indiceCamaraFicha = (indiceCamaraFicha + 1) % listaCamaras.length;
+        await ativarCamaraFicha(modoCamaraFicha, listaCamaras[indiceCamaraFicha].deviceId);
+      } else {
+        const proximoModo = modoCamaraFicha === "user" ? "environment" : "user";
+        await ativarCamaraFicha(proximoModo);
+      }
     }
 
     async function capturarBiometriaFicha() {
@@ -686,6 +774,64 @@
 
       vetorFacialFicha = Array.from(det.descriptor);
       document.getElementById('bio-status-ficha').innerHTML = `<span class="text-emerald-400 font-bold">✅ Assinatura Facial Capturada</span>`;
+    }
+
+    // BIOMETRIA DIGITAL (SENSOR NATIVO WEBAUTHN OU SIMULAÇÃO DEMO)
+    async function capturarImpressaoDigital() {
+      const dedo = document.getElementById('mil-dedo').value;
+      const status = document.getElementById('digital-status-ficha');
+      const matricula = document.getElementById('mil-matricula').value || "FARP-TEMP";
+
+      if (!window.PublicKeyCredential) {
+        alert("Este navegador não suporta sensor biométrico nativo. Use o botão 'Simular Leitor (Demo)'.");
+        return;
+      }
+
+      try {
+        status.innerText = "⏳ Encoste o dedo no sensor...";
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        const userId = new TextEncoder().encode(matricula);
+
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge,
+            rp: { name: "EMGFA Guiné-Bissau" },
+            user: {
+              id: userId,
+              name: matricula,
+              displayName: document.getElementById('mil-nome').value || matricula
+            },
+            pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
+            authenticatorSelection: {
+              authenticatorAttachment: "platform",
+              userVerification: "required"
+            },
+            timeout: 30000
+          }
+        });
+
+        impressaoDigitalFicha = {
+          dedo,
+          modo: "Sensor Nativo (WebAuthn)",
+          id: cred ? cred.id : "WEBAUTHN-OK"
+        };
+        status.innerHTML = `<span class="text-emerald-400 font-bold">✅ ${dedo} Validado (Sensor)</span>`;
+      } catch (err) {
+        status.innerText = "⚠️ Sensor indisponível — pode usar Simular Leitor";
+        alert("Não foi possível ler o sensor biométrico nativo deste dispositivo (" + err.message + "). Pode usar o botão 'Simular Leitor (Demo)' na apresentação.");
+      }
+    }
+
+    function simularImpressaoDigitalDemo() {
+      const dedo = document.getElementById('mil-dedo').value;
+      const hashDemo = "FP-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+      impressaoDigitalFicha = {
+        dedo,
+        modo: "Simulação de Leitor (Demo)",
+        id: hashDemo
+      };
+      document.getElementById('digital-status-ficha').innerHTML = `<span class="text-emerald-400 font-bold">✅ ${dedo} Capturado (${hashDemo})</span>`;
     }
 
     document.getElementById('form-registo-militar')?.addEventListener('submit', async (e) => {
@@ -713,19 +859,29 @@
       }
 
       const temBio = Boolean(vetorFacialFicha);
+      const temDigital = Boolean(impressaoDigitalFicha);
       const infoBio = temBio ? "\nBiometria Facial: ✅ Anexada (128 pontos)" : "\nBiometria Facial: Não anexada";
+      const infoDigital = temDigital ? `\nImpressão Digital: ✅ ${impressaoDigitalFicha.dedo} (${impressaoDigitalFicha.id})` : "\nImpressão Digital: Não anexada";
+
+      let tagsLog = [];
+      if (temBio) tagsLog.push("Face OK");
+      if (temDigital) tagsLog.push(`Dedo: ${impressaoDigitalFicha.dedo}`);
+      const sufixoLog = tagsLog.length > 0 ? ` [${tagsLog.join(" | ")}]` : "";
+
       registarLogAuditoria(
         `Cadastro (${dadosMilitar.ramo})`,
-        `${dadosMilitar.numero_matricula} — ${dadosMilitar.patente_posto} ${dadosMilitar.nome_completo}${temBio ? " [Bio OK]" : ""}`,
+        `${dadosMilitar.numero_matricula} — ${dadosMilitar.patente_posto} ${dadosMilitar.nome_completo}${sufixoLog}`,
         "REGISTADO",
         "ok"
       );
 
-      alert(`✅ MILITAR REGISTADO COM SUCESSO!\n\nMatrícula: ${dadosMilitar.numero_matricula}\nNome: ${dadosMilitar.nome_completo}\nRamo/Departamento: ${dadosMilitar.ramo}${infoBio}`);
+      alert(`✅ MILITAR REGISTADO COM SUCESSO!\n\nMatrícula: ${dadosMilitar.numero_matricula}\nNome: ${dadosMilitar.nome_completo}\nRamo/Departamento: ${dadosMilitar.ramo}${infoBio}${infoDigital}`);
       
       document.getElementById('form-registo-militar').reset();
       vetorFacialFicha = null;
+      impressaoDigitalFicha = null;
       document.getElementById('bio-status-ficha').innerText = "Não capturado";
+      document.getElementById('digital-status-ficha').innerText = "Não capturado";
     });
   </script>
 </body>
